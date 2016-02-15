@@ -12,7 +12,7 @@ cmake_minimum_required(VERSION 2.6.3)
 # macro, except for orocos_typekit, where the target is fully
 # controlled by generated code of 'typegen'.
 #
-project(yarp)
+project(rtt-yarp-transport)
 
 # Look for deps
 find_package(OROCOS-RTT REQUIRED)
@@ -48,7 +48,7 @@ if(BUILD_DOC)
 		message(STATUS "docbook2pdf not found, cannot build doc")
 	else(DOCBOOK-NOTFOUND)
 		add_custom_target(doc ALL ${DOCBOOK} ${CMAKE_SOURCE_DIR}/doc/yarp-transport-doc.xml)
-		install(FILES ${CMAKE_BINARY_DIR}/yarp-transport-doc.pdf 
+		install(FILES ${CMAKE_BINARY_DIR}/yarp-transport-doc.pdf
 			DESTINATION share/doc/yarp-transport)
 	endif(DOCBOOK-NOTFOUND)
 endif()
@@ -57,9 +57,9 @@ endif()
 #
 # Installs in the include/orocos/transports/ directory
 #
-orocos_install_headers( transport/YarpTransport.hpp 
+orocos_install_headers( transport/YarpTransport.hpp
 			transport/YarpTemplateProtocol.hpp
-			transport/YarpChannelElement.hpp 
+			transport/YarpChannelElement.hpp
 			transport/yarp_bottle_archive.hpp
 			)
 
@@ -67,29 +67,4 @@ orocos_install_headers( transport/YarpTransport.hpp
 # Generates and installs our package. Must be the last statement such
 # that it can pick up all above settings.
 #
-#orocos_generate_package()
-set(PC_NAME ${PROJECT_NAME}-${OROCOS_TARGET})
-set(PC_LIBS "Libs: ")
-set(PC_LIBS "${PC_LIBS} -L\${libdir} ${OROCOS_DEFINED_LIBS}")
-set(PC_LIBS "${PC_LIBS} -L\${orocos_libdir} ${OROCOS_DEFINED_COMPS}")
-set(PC_LIBS "${PC_LIBS} -L\${orocos_libdir}/plugins ${OROCOS_DEFINED_PLUGINS}")
-set(PC_LIBS "${PC_LIBS} -L\${orocos_libdir}/types ${OROCOS_DEFINED_TYPES}")
-set(PC_PREFIX ${CMAKE_INSTALL_PREFIX})
-set(PC_LIB_DIR "\${libdir}/orocos${OROCOS_SUFFIX}/${PROJECT_NAME}")
-set(PC_CONTENTS "prefix=@PC_PREFIX@
-libdir=\${prefix}/lib
-includedir=\${prefix}/include/orocos
-orocos_libdir=${PC_LIB_DIR}
-
-Name: ${PC_NAME}
-Description: ${PC_NAME} package for Orocos
-Requires: orocos-rtt-${OROCOS_TARGET} ${ORO_CREATE_PC_DEPENDS}
-Version: ${ORO_CREATE_PC_VERSION}
-${PC_LIBS}
-Cflags: -I\${includedir} -I${YARP_INCLUDE_DIRS}
-")
-string(CONFIGURE "${PC_CONTENTS}" INSTALLED_PC_CONTENTS @ONLY)
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${PC_NAME}.pc ${INSTALLED_PC_CONTENTS})
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${PC_NAME}.pc DESTINATION lib/pkgconfig )
-orocos_uninstall_target()
-
+orocos_generate_package()
