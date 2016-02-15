@@ -1,0 +1,18 @@
+<package>
+  <name>rtt-yarp-transport</name>
+  <description>
+	Yarp transport for the Orocos toolchain
+  </description>
+  <version>1.0.0</version>
+  <maintainer email="hoarau.robotics@gmail.com">Antoine Hoarau</maintainer>
+  <author email="charles.lesire@onera.fr">Charles Lesire</author>
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>rtt</build_depend>
+  <build_depend>yarp</build_depend>
+
+  <run_depend>rtt</run_depend>
+  <run_depend>yarp</run_depend>
+</package>
