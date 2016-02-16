@@ -1,5 +1,5 @@
 <package>
-  <name>rtt-yarp-transport</name>
+  <name>rtt_yarp_transport</name>
   <description>
 	Yarp transport for the Orocos toolchain
   </description>

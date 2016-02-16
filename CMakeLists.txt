@@ -12,7 +12,7 @@ cmake_minimum_required(VERSION 2.6.3)
 # macro, except for orocos_typekit, where the target is fully
 # controlled by generated code of 'typegen'.
 #
-project(rtt-yarp-transport)
+project(rtt_yarp_transport)
 
 # Look for deps
 find_package(OROCOS-RTT REQUIRED)
@@ -25,8 +25,8 @@ include(${OROCOS-RTT_USE_FILE_PATH}/UseOROCOS-RTT.cmake)
 
 # YARP transport
 include_directories(transport/)
-orocos_plugin( ${PROJECT_NAME} transport/YarpTransport.cpp )
-target_link_libraries( ${PROJECT_NAME} ${OROCOS-RTT_LIBRARIES} ${YARP_LIBRARIES})
+orocos_plugin( rtt-yarp-transport transport/YarpTransport.cpp )
+target_link_libraries( rtt-yarp-transport ${OROCOS-RTT_LIBRARIES} ${YARP_LIBRARIES})
 
 # YARP service
 orocos_service( yarp-service service/Yarp-service.cpp )
@@ -34,7 +34,7 @@ orocos_service( yarp-service service/Yarp-service.cpp )
 # Test file
 if(CATKIN_ENABLE_TESTING)
 	orocos_executable(FooTest testing/FooTest.cpp)
-	target_link_libraries(FooTest ${PROJECT_NAME})
+	target_link_libraries(FooTest rtt-yarp-transport)
 	add_test(YarpTransport FooTest-${OROCOS_TARGET})
 endif()
 
