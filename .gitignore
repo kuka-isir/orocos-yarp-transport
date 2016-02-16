@@ -1,3 +1,5 @@
 *.html
 build
 *~
+orocos.log
+.tb_history
