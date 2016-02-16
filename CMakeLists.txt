@@ -25,16 +25,14 @@ include(${OROCOS-RTT_USE_FILE_PATH}/UseOROCOS-RTT.cmake)
 
 # YARP transport
 include_directories(transport/)
-orocos_plugin( yarp-transport transport/YarpTransport.cpp )
-target_link_libraries( yarp-transport ${OROCOS-RTT_LIBRARIES} ${YARP_LIBRARIES})
+orocos_plugin( ${PROJECT_NAME} transport/YarpTransport.cpp )
+target_link_libraries( ${PROJECT_NAME} ${OROCOS-RTT_LIBRARIES} ${YARP_LIBRARIES})
 
 # YARP service
 orocos_service( yarp-service service/Yarp-service.cpp )
 
 # Test file
-option(ENABLE_TESTING "Enable testing")
-if(ENABLE_TESTING)
-	enable_testing()
+if(CATKIN_ENABLE_TESTING)
 	orocos_executable(FooTest testing/FooTest.cpp)
 	target_link_libraries(FooTest ${PROJECT_NAME})
 	add_test(YarpTransport FooTest-${OROCOS_TARGET})
@@ -67,4 +65,4 @@ orocos_install_headers( transport/YarpTransport.hpp
 # Generates and installs our package. Must be the last statement such
 # that it can pick up all above settings.
 #
-orocos_generate_package()
+orocos_generate_package(INCLUDE_DIRS transport)
