@@ -11,7 +11,7 @@
 #include <rtt/ConnPolicy.hpp>
 #include <rtt/plugin/ServicePlugin.hpp>
 
-#include "../transport/YarpTransport.hpp"
+#include "YarpTransport.hpp"
 
 using namespace RTT;
 
