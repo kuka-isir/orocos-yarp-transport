@@ -1,4 +1,4 @@
-import("yarp-transport")
+import("rtt-yarp-transport")
 loadService("Deployer", "print")
 loadService("Deployer", "yarp")
 
@@ -6,15 +6,18 @@ loadComponent("cout", "OCL::HMIConsoleOutput")
 cout.start()
 
 loadComponent("Hello", "OCL::HelloWorld")
+Hello.configure
 Hello.start()
 
 loadComponent("World", "OCL::HelloWorld")
+World.configure
 World.start()
 
 var ConnPolicy conn
 conn.type = BUFFER
 conn.size = 2
-yarp.add_topic(conn, "HelloTopic")
+//yarp.add_topic(conn, "/HelloTopic")
+conn.transport = 89
 connect("Hello.the_results", "World.the_buffer_port", conn)
 
 Deployer.setPeriod(1)
@@ -24,12 +27,12 @@ program test {
 	var string s
 	print.log(Info, "*** Starting Yarp test ***")
 	yield
-	
+
 	Hello.the_results.write("Hello World")
 	print.log(Info, "Hello has written \"Hello World\"")
 	yield
-	
-	if (World.the_buffer_port.read(s) == NewData && s == "Hello World") then 
+
+	if (World.the_buffer_port.read(s) == NewData && s == "Hello World") then
 		print.log(Info, "World has received \"Hello World\"")
 	else error
 	yield
@@ -37,30 +40,30 @@ program test {
 	Hello.the_results.write("Hello")
 	print.log(Info, "Hello has written \"Hello\"")
 	yield
-	
+
 	Hello.the_results.write("World")
 	print.log(Info, "Hello has written \"World\"")
 	yield
-	
+
 	Hello.the_results.write("Hello World")
 	print.log(Info, "Hello has written \"Hello World\"")
 	yield
 
-	if (World.the_buffer_port.read(s) == NewData && s == "Hello") then 
+	if (World.the_buffer_port.read(s) == NewData && s == "Hello") then
 		print.log(Info, "World has received \"Hello\"")
 	else error
 	yield
-	
-	if (World.the_buffer_port.read(s) == NewData && s == "World") then 
+
+	if (World.the_buffer_port.read(s) == NewData && s == "World") then
 		print.log(Info, "World has received \"World\"")
 	else error
 	yield
-	
+
 	if (World.the_buffer_port.read(s) == OldData) then
 		print.log(Info, "World buffer has no more new data -- buffer size is 2")
 	else error
 	yield
-	
+
 	print.log(Info, "*** Test Successful ***")
 }
 

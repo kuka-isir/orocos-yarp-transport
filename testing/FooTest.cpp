@@ -5,8 +5,8 @@
 #include <rtt/os/main.h>
 
 #include "Foo.hpp"
-#include "../YarpTemplateProtocol.hpp"
-#include "../YarpTransport.hpp"
+#include "YarpTemplateProtocol.hpp"
+#include "YarpTransport.hpp"
 
 using namespace RTT;
 using namespace RTT::types;
@@ -23,7 +23,7 @@ int ORO_main(int argc, char** argv)
 	OutputPort<Foo> out_foo("out_foo"); tc.addPort(out_foo);
 	ConnPolicy yarp_foopol = ConnPolicy::data();
 	yarp_foopol.transport = ORO_YARP_PROTOCOL_ID;
-	yarp_foopol.name_id = "FooTopic";
+	yarp_foopol.name_id = "/FooTopic";
 
 	assert(out_foo.connectTo(&in_foo, yarp_foopol));
 
@@ -31,10 +31,10 @@ int ORO_main(int argc, char** argv)
 
 	// Wait for Yarp connection to be effective
 	sleep(3);
-	
+
 	Foo f; f.i = 1; f.d = 2.3; f.s = "Foo"; f.v = std::vector<double>(4, 5.6);
 	out_foo.write(f);
-	
+
 	// Wait for Yarp to carry the data
 	sleep(1);
 
@@ -45,6 +45,6 @@ int ORO_main(int argc, char** argv)
 	assert(f.s == b.s);
 	assert(f.v.size() == b.v.size());
 	for (int k = 0; k < f.v.size(); k++) assert(f.v[k] == b.v[k]);
-	
+
 	return 0;
 }
